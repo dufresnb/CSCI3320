@@ -28,9 +28,12 @@ android:layout_height="match_parent" android:background="#333333" android:name="
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/textView"
-        android:layout_gravity="center" />
+        android:text="@string/scores"
+        android:id="@+id/scores"
+        android:layout_gravity="center"
+        android:textColor="#ffffff"
+        android:textSize="40dp"
+        android:layout_marginBottom="100dp" />
 
     <Button
         android:layout_width="179dp"

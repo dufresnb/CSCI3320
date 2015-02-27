@@ -29,7 +29,7 @@
             android:layout_height="fill_parent"
             android:id="@+id/Board"
             android:contentDescription="@string/tictactoeboard.png"
-            android:src="@mipmap/tictactoeboard"
+            android:src="@drawable/tictactoeboard"
             android:scaleType="fitXY"/>
 
         <ImageView
@@ -143,6 +143,114 @@
             android:text="@string/turnx"
             android:id="@+id/turnx"
             android:layout_gravity="bottom|center_horizontal" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:visibility="gone"
+            android:id="@+id/top"
+            android:layout_gravity="top|left|right"
+            android:contentDescription="@string/line"
+            android:src="@drawable/horizontalline" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:id="@+id/midHor"
+            android:layout_gravity="left|center|right"
+            android:contentDescription="@string/line"
+            android:src="@drawable/horizontalline" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="70dp"
+            android:visibility="gone"
+            android:id="@+id/bot"
+            android:layout_gravity="left|bottom|right"
+            android:contentDescription="@string/line"
+            android:src="@drawable/horizontalline" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:visibility="gone"
+            android:id="@+id/left"
+            android:layout_gravity="left"
+            android:contentDescription="@string/line"
+            android:src="@drawable/verticalline" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:id="@+id/midVert"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/line"
+            android:src="@drawable/verticalline" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="50dp"
+            android:visibility="gone"
+            android:id="@+id/right"
+            android:layout_gravity="right"
+            android:contentDescription="@string/line"
+            android:src="@drawable/verticalline" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:id="@+id/topLeftToBot"
+            android:contentDescription="@string/line"
+            android:src="@drawable/toplefttobottom" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:id="@+id/topRightToBot"
+            android:contentDescription="@string/line"
+            android:src="@drawable/toprighttobottom" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/replay_button"
+            android:id="@+id/replay"
+            android:layout_gravity="center"
+            android:layout_marginTop="90dp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:visibility="gone"
+            android:id="@+id/textbg"
+            android:layout_gravity="center"
+            android:contentDescription="@string/textbg"
+            android:src="#333333"
+            android:layout_marginBottom="78dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/winner"
+            android:id="@+id/winner"
+            android:layout_gravity="center"
+            android:layout_marginBottom="80dp"
+            android:textColor="#ffffff"
+            android:textColorHighlight="#333333"
+            android:textSize="40sp"
+            android:textIsSelectable="false"
+            android:singleLine="true" />
+
 
 
     </FrameLayout>

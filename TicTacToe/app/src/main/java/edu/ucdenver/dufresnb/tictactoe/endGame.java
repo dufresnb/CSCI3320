@@ -20,11 +20,22 @@ public class endGame extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        int xScore=0;
+        int oScore=0;
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            xScore = extras.getInt("xScore");
+            oScore = extras.getInt("oScore");
+        }
+
         setContentView(R.layout.finalscores);
 
         final View controlsView = findViewById(R.id.fullscreen_content_controls);
         final View contentView = findViewById(R.id.fullscreen_content);
 
+        TextView myScores = (TextView) findViewById(R.id.scores);
+        myScores.setText("X Player: " + xScore + "\n\nO Player: " + oScore);
 
         Button final_button = (Button) findViewById(R.id.exitGame);
         final_button.setOnClickListener(new View.OnClickListener() {

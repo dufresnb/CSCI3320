@@ -4,7 +4,9 @@ import edu.ucdenver.dufresnb.tictactoe.util.SystemUiHider;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,50 +17,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.Random;
 
-/**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
- *
- * @see SystemUiHider
- */
 public class TicTacToe extends Activity {
-    /**
-     * Whether or not the system UI should be auto-hidden after
-     * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
-     */
-    private static final boolean AUTO_HIDE = false;
-
-    /**
-     * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
-     * user interaction before hiding the system UI.
-     */
-    private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
-
-    /**
-     * If set, will toggle the system UI visibility upon interaction. Otherwise,
-     * will show the system UI visibility upon interaction.
-     */
-    private static final boolean TOGGLE_ON_CLICK = true;
-
-    /**
-     * The flags to pass to {@link SystemUiHider#getInstance}.
-     */
-    private static final int HIDER_FLAGS = SystemUiHider.FLAG_HIDE_NAVIGATION;
-
-    /**
-     * The instance of the {@link SystemUiHider} for this activity.
-     */
-    private SystemUiHider mSystemUiHider;
 
     private boolean xTurn=true;
     private int tl,tc,tr,ml,mc,mr,bl,bc,br = 0;
-    private int xScore,oScore=0;
+    public int xScore,oScore=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_tic_tac_toe);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            xScore = extras.getInt("xScore");
+            oScore = extras.getInt("oScore");
+        }
 
         final View controlsView = findViewById(R.id.fullscreen_content_controls);
         final View contentView = findViewById(R.id.fullscreen_content);
@@ -67,114 +42,30 @@ public class TicTacToe extends Activity {
         final_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent myIntent = new Intent(contentView.getContext(), endGame.class);
+                myIntent.putExtra("xScore",xScore);
+                myIntent.putExtra("oScore",oScore);
                 startActivityForResult(myIntent, 0);
                 finish();
             }
         });
 
-
-        // Set up an instance of SystemUiHider to control the system UI for
-        // this activity.
-        mSystemUiHider = SystemUiHider.getInstance(this, contentView, HIDER_FLAGS);
-        mSystemUiHider.setup();
-        mSystemUiHider
-                .setOnVisibilityChangeListener(new SystemUiHider.OnVisibilityChangeListener() {
-                    // Cached values.
-                    int mControlsHeight;
-                    int mShortAnimTime;
-
-                    @Override
-                    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-                    public void onVisibilityChange(boolean visible) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-                            // If the ViewPropertyAnimator API is available
-                            // (Honeycomb MR2 and later), use it to animate the
-                            // in-layout UI controls at the bottom of the
-                            // screen.
-                            if (mControlsHeight == 0) {
-                                mControlsHeight = controlsView.getHeight();
-                            }
-                            if (mShortAnimTime == 0) {
-                                mShortAnimTime = getResources().getInteger(
-                                        android.R.integer.config_shortAnimTime);
-                            }
-                            controlsView.animate()
-                                    .translationY(visible ? 0 : mControlsHeight)
-                                    .setDuration(mShortAnimTime);
-                        } else {
-                            // If the ViewPropertyAnimator APIs aren't
-                            // available, simply show or hide the in-layout UI
-                            // controls.
-                            controlsView.setVisibility(visible ? View.VISIBLE : View.GONE);
-                        }
-
-                        if (visible && AUTO_HIDE) {
-                            // Schedule a hide().
-                            delayedHide(AUTO_HIDE_DELAY_MILLIS);
-                        }
-                    }
-                });
-
-        // Set up the user interaction to manually show or hide the system UI.
-        /*
-        contentView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (TOGGLE_ON_CLICK) {
-                    mSystemUiHider.toggle();
-                } else {
-                    mSystemUiHider.show();
-                }
+        Button replay_button = (Button) findViewById(R.id.replay);
+        replay_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                reset();
             }
-        });*/
+        });
 
-        // Upon interacting with UI controls, delay any scheduled hide()
-        // operations to prevent the jarring behavior of controls going away
-        // while interacting with the UI.
-        findViewById(R.id.final_score_button).setOnTouchListener(mDelayHideTouchListener);
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
-        // Trigger the initial hide() shortly after the activity has been
-        // created, to briefly hint to the user that UI controls
-        // are available.
-        //delayedHide(100);
-    }
-
-
-    /**
-     * Touch listener to use for in-layout UI controls to delay hiding the
-     * system UI. This is to prevent the jarring behavior of controls going away
-     * while interacting with activity UI.
-     */
-    View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            if (AUTO_HIDE) {
-                delayedHide(AUTO_HIDE_DELAY_MILLIS);
-            }
-            return false;
-        }
-    };
-
-    Handler mHideHandler = new Handler();
-    Runnable mHideRunnable = new Runnable() {
-        @Override
-        public void run() {
-            mSystemUiHider.hide();
-        }
-    };
-
-    /**
-     * Schedules a call to hide() in [delay] milliseconds, canceling any
-     * previously scheduled calls.
-     */
-    private void delayedHide(int delayMillis) {
-        mHideHandler.removeCallbacks(mHideRunnable);
-        mHideHandler.postDelayed(mHideRunnable, delayMillis);
+    private void reset()
+    {
+        View contentView = findViewById(R.id.fullscreen_content);
+        Intent myIntent = new Intent(contentView.getContext(), TicTacToe.class);
+        myIntent.putExtra("xScore",xScore);
+        myIntent.putExtra("oScore",oScore);
+        startActivityForResult(myIntent, 0);
+        finish();
     }
 
     private void setTurn()
@@ -196,47 +87,151 @@ public class TicTacToe extends Activity {
 
     private void topWin()
     {
-        if(tl==1)++xScore;
-        else ++oScore;
+        if(tl==1)
+        {
+            xWin();
+        }
+        else
+        {
+            oWin();
+        }
+        ImageView myLine = (ImageView) findViewById(R.id.top);
+        myLine.setVisibility(View.VISIBLE);
+        replayButton();
     }
+
     private void midHorWin()
     {
-        if(tl==1)++xScore;
-        else ++oScore;
+        if(ml==1)
+        {
+            xWin();
+        }
+        else
+        {
+            oWin();
+        }
+        ImageView myLine = (ImageView) findViewById(R.id.midHor);
+        myLine.setVisibility(View.VISIBLE);
+        replayButton();
     }
+
     private void botWin()
     {
-        if(tl==1)++xScore;
-        else ++oScore;
+        if(bl==1)
+        {
+            xWin();
+        }
+        else
+        {
+            oWin();
+        }
+        ImageView myLine = (ImageView) findViewById(R.id.bot);
+        myLine.setVisibility(View.VISIBLE);
+        replayButton();
     }
+
     private void leftWin()
     {
-        if(tl==1)++xScore;
-        else ++oScore;
+        if(tl==1)
+        {
+            xWin();
+        }
+        else
+        {
+            oWin();
+        }
+        ImageView myLine = (ImageView) findViewById(R.id.left);
+        myLine.setVisibility(View.VISIBLE);
+        replayButton();
     }
+
     private void midVertWin()
     {
-        if(tl==1)++xScore;
-        else ++oScore;
+        if(tc==1)
+        {
+            xWin();
+        }
+        else
+        {
+            oWin();
+        }
+        ImageView myLine = (ImageView) findViewById(R.id.midVert);
+        myLine.setVisibility(View.VISIBLE);
+        replayButton();
     }
+
     private void rightWin()
     {
-        if(tl==1)++xScore;
-        else ++oScore;
+        if(tr==1)
+        {
+            xWin();
+        }
+        else
+        {
+            oWin();
+        }
+        ImageView myLine = (ImageView) findViewById(R.id.right);
+        myLine.setVisibility(View.VISIBLE);
+        replayButton();
     }
+
     private void topLeftBotRightWin()
     {
-        if(tl==1)++xScore;
-        else ++oScore;
+        if(tl==1)
+        {
+            xWin();
+        }
+        else
+        {
+            oWin();
+        }
+        ImageView myLine = (ImageView) findViewById(R.id.topLeftToBot);
+        myLine.setVisibility(View.VISIBLE);
+        replayButton();
     }
+
     private void topRightBotLeftWin()
     {
-        if(tl==1)++xScore;
-        else ++oScore;
+        if(tr==1)
+        {
+            xWin();
+        }
+        else
+        {
+            oWin();
+        }
+        ImageView myLine = (ImageView) findViewById(R.id.topRightToBot);
+        myLine.setVisibility(View.VISIBLE);
+        replayButton();
     }
+
+    private void xWin()
+    {
+        ++xScore;
+        ImageView myLine = (ImageView) findViewById(R.id.textbg);
+        myLine.setVisibility(View.VISIBLE);
+        TextView theWinner = (TextView) findViewById(R.id.winner);
+        theWinner.setText("X Player Wins!");
+    }
+
+    private void oWin()
+    {
+        ++oScore;
+        ImageView myLine = (ImageView) findViewById(R.id.textbg);
+        myLine.setVisibility(View.VISIBLE);
+        TextView theWinner = (TextView) findViewById(R.id.winner);
+        theWinner.setText("O Player Wins!");
+    }
+
+    private void replayButton()
+    {
+        View myButton = (Button) findViewById(R.id.replay);
+        myButton.setVisibility(View.VISIBLE);
+    }
+
     private void tieGame()
     {
-
+        replayButton();
     }
 
     private void checkWin()
@@ -293,20 +288,20 @@ public class TicTacToe extends Activity {
         if (myImage.getTag() == null) {
             switch (x) {
                 case 0:
-                    if (xTurn) myImage.setImageResource(R.mipmap.x1);
-                    else myImage.setImageResource(R.mipmap.o1);
+                    if (xTurn) myImage.setImageResource(R.drawable.x1);
+                    else myImage.setImageResource(R.drawable.o1);
                     break;
                 case 1:
-                    if (xTurn) myImage.setImageResource(R.mipmap.x2);
-                    else myImage.setImageResource(R.mipmap.o2);
+                    if (xTurn) myImage.setImageResource(R.drawable.x2);
+                    else myImage.setImageResource(R.drawable.o2);
                     break;
                 case 2:
-                    if (xTurn) myImage.setImageResource(R.mipmap.x3);
-                    else myImage.setImageResource(R.mipmap.o3);
+                    if (xTurn) myImage.setImageResource(R.drawable.x3);
+                    else myImage.setImageResource(R.drawable.o3);
                     break;
                 case 3:
-                    if (xTurn) myImage.setImageResource(R.mipmap.x4);
-                    else myImage.setImageResource(R.mipmap.o4);
+                    if (xTurn) myImage.setImageResource(R.drawable.x4);
+                    else myImage.setImageResource(R.drawable.o4);
                     break;
             }
             myImage.setTag(R.mipmap.ic_launcher);
