@@ -1,6 +1,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:background="#0099cc" tools:context=".TicTacToe">
+    android:layout_height="match_parent" android:background="#333333" tools:context=".TicTacToe">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
@@ -8,12 +8,13 @@
     <TextView android:id="@+id/fullscreen_content" android:layout_width="match_parent"
         android:layout_height="match_parent" android:keepScreenOn="true" android:textColor="#33b5e5"
         android:textStyle="bold" android:textSize="50sp" android:gravity="center"
-        android:text="@string/dummy_content" />
+        android:text="@string/background_text" />
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
     <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        android:id="@+id/backGround">
 
         <LinearLayout android:id="@+id/fullscreen_content_controls" style="?metaButtonBarStyle"
             android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -21,11 +22,129 @@
             android:background="@color/black_overlay" android:orientation="horizontal"
             tools:ignore="UselessParent">
 
-            <Button android:id="@+id/final_score_button" style="?metaButtonBarButtonStyle"
-                android:layout_width="0dp" android:layout_height="wrap_content"
-                android:layout_weight="1" android:text="Final Score" />
-
         </LinearLayout>
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/Board"
+            android:contentDescription="@string/tictactoeboard.png"
+            android:src="@mipmap/tictactoeboard"
+            android:scaleType="fitXY"/>
+
+        <ImageView
+            android:layout_width="115dp"
+            android:layout_height="115dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="5dp"
+            android:id="@+id/topLeft"
+            android:layout_gravity="left|top"
+            android:contentDescription="@string/tl"
+            android:onClick="chosen"/>
+
+        <ImageView
+            android:layout_width="115dp"
+            android:layout_height="115dp"
+            android:layout_marginTop="40dp"
+            android:id="@+id/topCenter"
+            android:layout_gravity="center_horizontal|top"
+            android:contentDescription="@string/tc"
+            android:onClick="chosen"/>
+
+        <ImageView
+            android:layout_width="115dp"
+            android:layout_height="115dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="5dp"
+            android:id="@+id/topRight"
+            android:layout_gravity="right|top"
+            android:contentDescription="@string/tr"
+            android:onClick="chosen"/>
+
+        <ImageView
+            android:layout_width="115dp"
+            android:layout_height="115dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:id="@+id/midLeft"
+            android:layout_gravity="left|center_vertical"
+            android:contentDescription="@string/ml"
+            android:onClick="chosen"/>
+
+        <ImageView
+            android:layout_width="115dp"
+            android:layout_height="115dp"
+            android:layout_marginTop="5dp"
+            android:id="@+id/midCenter"
+            android:layout_gravity="center"
+            android:contentDescription="@string/mc"
+            android:onClick="chosen"/>
+
+        <ImageView
+            android:layout_width="115dp"
+            android:layout_height="115dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:id="@+id/midRight"
+            android:layout_gravity="right|center_vertical"
+            android:contentDescription="@string/mr"
+            android:onClick="chosen"/>
+
+        <ImageView
+            android:layout_width="115dp"
+            android:layout_height="115dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="40dp"
+            android:id="@+id/bottomLeft"
+            android:layout_gravity="left|bottom"
+            android:contentDescription="@string/bl"
+            android:onClick="chosen"/>
+
+        <ImageView
+            android:layout_width="115dp"
+            android:layout_height="115dp"
+            android:layout_marginBottom="40dp"
+            android:id="@+id/bottomCenter"
+            android:layout_gravity="center_horizontal|bottom"
+            android:contentDescription="@string/bc"
+            android:onClick="chosen"/>
+
+        <ImageView
+            android:layout_width="115dp"
+            android:layout_height="115dp"
+            android:layout_marginBottom="40dp"
+            android:layout_marginRight="5dp"
+            android:id="@+id/bottomRight"
+            android:layout_gravity="right|bottom"
+            android:contentDescription="@string/br"
+            android:onClick="chosen"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/final_score_button"
+            android:id="@+id/final_score_button"
+            android:layout_gravity="right|bottom" />
+
+        <TextView
+            android:layout_width="75dp"
+            android:layout_height="33dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:visibility="gone"
+            android:text="@string/turno"
+            android:id="@+id/turno"
+            android:layout_gravity="bottom|center_horizontal" />
+
+        <TextView
+            android:layout_width="75dp"
+            android:layout_height="33dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:visibility="visible"
+            android:text="@string/turnx"
+            android:id="@+id/turnx"
+            android:layout_gravity="bottom|center_horizontal" />
+
+
     </FrameLayout>
 
 </FrameLayout>

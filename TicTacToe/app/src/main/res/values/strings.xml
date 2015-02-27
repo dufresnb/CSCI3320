@@ -1,6 +1,19 @@
 <resources>
     <string name="app_name">TicTacToe</string>
 
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="final_score_button">Final Score</string>
+    <string name="background_text"></string>
+    <string name="tictactoeboard.png">TicTacToeBoard</string>
+    <string name="tl"></string>
+    <string name="tc"></string>
+    <string name="tr"></string>
+    <string name="ml"></string>
+    <string name="mc"></string>
+    <string name="mr"></string>
+    <string name="bl"></string>
+    <string name="bc"></string>
+    <string name="br"></string>
+    <string name="turnx" id="x">X\'s turn</string>
+    <string name="turno" id="o">O\'s turn</string>
+    <string name="exit" id="x">Exit game</string>
 </resources>

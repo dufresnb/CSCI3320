@@ -43,7 +43,7 @@ public abstract class SystemUiHider {
      * the visibility of the status bar. If there is a navigation bar, show and
      * hide will toggle low profile mode.
      */
-    public static final int FLAG_FULLSCREEN = 0x2;
+    public static final int FLAG_FULLSCREEN = 0x0;
 
     /**
      * When this flag is set, {@link #show()} and {@link #hide()} will toggle
