@@ -21,7 +21,9 @@ public class TicTacToe extends Activity {
 
     private boolean xTurn=true;
     private int tl,tc,tr,ml,mc,mr,bl,bc,br = 0;
-    public int xScore,oScore=0;
+    private boolean gameOver=false;
+    private boolean ai=false;
+    private int xScore,oScore=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,26 @@ public class TicTacToe extends Activity {
             }
         });
 
+        Button ai_button = (Button) findViewById(R.id.playai);
+        ai_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                toggleAI();
+            }
+        });
+    }
+
+    private void toggleAI()
+    {
+        ai=!ai;
+        if(ai) {
+            TextView playai = (TextView) findViewById(R.id.playai);
+            playai.setText("Play Human");
+        }
+        else
+        {
+            TextView playai = (TextView) findViewById(R.id.playai);
+            playai.setText("Play A.I.");
+        }
     }
 
     private void reset()
@@ -207,6 +229,7 @@ public class TicTacToe extends Activity {
 
     private void xWin()
     {
+        gameOver=true;
         ++xScore;
         ImageView myLine = (ImageView) findViewById(R.id.textbg);
         myLine.setVisibility(View.VISIBLE);
@@ -216,6 +239,7 @@ public class TicTacToe extends Activity {
 
     private void oWin()
     {
+        gameOver=true;
         ++oScore;
         ImageView myLine = (ImageView) findViewById(R.id.textbg);
         myLine.setVisibility(View.VISIBLE);
@@ -249,6 +273,7 @@ public class TicTacToe extends Activity {
 
     public void chosen(View view)
     {
+        if(gameOver)return;
         Random r = new Random();
         int c;
         if(xTurn)c=1;

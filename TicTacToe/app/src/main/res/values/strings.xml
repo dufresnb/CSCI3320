@@ -22,4 +22,5 @@
     <string name="exit" id="x">Exit game</string>
     <string name="scores" id="@+id/scores"></string>
     <string name="winner" id="@+id/winner"></string>
+    <string name="playai" id="@+id/playai">Play A.I.</string>
 </resources>
