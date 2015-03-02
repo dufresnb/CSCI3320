@@ -35,10 +35,16 @@ public class TicTacToe extends Activity {
         if(extras != null) {
             xScore = extras.getInt("xScore");
             oScore = extras.getInt("oScore");
+            xTurn = extras.getBoolean("xTurn");
+            ai = extras.getBoolean("ai");
         }
 
         final View controlsView = findViewById(R.id.fullscreen_content_controls);
         final View contentView = findViewById(R.id.fullscreen_content);
+
+        getTurn();
+        getAI();
+        if(ai && !xTurn)doAI();
 
         Button final_button = (Button) findViewById(R.id.final_score_button);
         final_button.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +75,12 @@ public class TicTacToe extends Activity {
     private void toggleAI()
     {
         ai=!ai;
+        getAI();
+        if(ai && !xTurn)doAI();
+    }
+
+    private void getAI()
+    {
         if(ai) {
             TextView playai = (TextView) findViewById(R.id.playai);
             playai.setText("Play Human");
@@ -86,6 +98,8 @@ public class TicTacToe extends Activity {
         Intent myIntent = new Intent(contentView.getContext(), TicTacToe.class);
         myIntent.putExtra("xScore",xScore);
         myIntent.putExtra("oScore",oScore);
+        myIntent.putExtra("xTurn",xTurn);
+        myIntent.putExtra("ai",ai);
         startActivityForResult(myIntent, 0);
         finish();
     }
@@ -93,6 +107,11 @@ public class TicTacToe extends Activity {
     private void setTurn()
     {
         xTurn=!xTurn;
+        getTurn();
+    }
+
+    private void getTurn()
+    {
         TextView o = (TextView) findViewById(R.id.turno);
         TextView x = (TextView) findViewById(R.id.turnx);
         if(xTurn)
@@ -271,6 +290,181 @@ public class TicTacToe extends Activity {
         else if(tl!=0 && tc!=0 && tr!=0 && ml!=0 && mc!=0 && mr!=0 && bl!=0 && bc!=0 && br!=0)tieGame();
     }
 
+    private void doAI()
+    {
+        View temp;
+        if(tl==0 && tc==0 && tr==0 && ml==0 && mc==0 && mr==0 && bl==0 && bc==0 && br==0)
+        {
+            temp = findViewById(R.id.midCenter);
+            chosen(temp);
+        }
+        else if(tl==tc && tc!=0 && tr==0)
+        {
+            temp = findViewById(R.id.topRight);
+            chosen(temp);
+        }
+        else if(tr==tc && tc!=0 && tl==0)
+        {
+            temp = findViewById(R.id.topLeft);
+            chosen(temp);
+        }
+        else if(tr==tl && tl!=0 && tc==0)
+        {
+            temp = findViewById(R.id.topCenter);
+            chosen(temp);
+        }
+        else if(ml==mc && mc!=0 && mr==0)
+        {
+            temp = findViewById(R.id.midRight);
+            chosen(temp);
+        }
+        else if(mr==mc && mc!=0 && ml==0)
+        {
+            temp = findViewById(R.id.midLeft);
+            chosen(temp);
+        }
+        else if(mr==ml && ml!=0 && mc==0)
+        {
+            temp = findViewById(R.id.midCenter);
+            chosen(temp);
+        }
+        else if(bl==bc && bc!=0 && br==0)
+        {
+            temp = findViewById(R.id.bottomRight);
+            chosen(temp);
+        }
+        else if(br==bc && bc!=0 && bl==0)
+        {
+            temp = findViewById(R.id.bottomLeft);
+            chosen(temp);
+        }
+        else if(br==bl && bl!=0 && bc==0)
+        {
+            temp = findViewById(R.id.bottomCenter);
+            chosen(temp);
+        }
+        else if(tl==ml && ml!=0 && bl==0)
+        {
+            temp = findViewById(R.id.bottomLeft);
+            chosen(temp);
+        }
+        else if(ml==bl && bl!=0 && tl==0)
+        {
+            temp = findViewById(R.id.topLeft);
+            chosen(temp);
+        }
+        else if(bl==tl && tl!=0 && ml==0)
+        {
+            temp = findViewById(R.id.midLeft);
+            chosen(temp);
+        }
+        else if(tc==mc && mc!=0 && bc==0)
+        {
+            temp = findViewById(R.id.bottomCenter);
+            chosen(temp);
+        }
+        else if(bc==mc && mc!=0 && tc==0)
+        {
+            temp = findViewById(R.id.topCenter);
+            chosen(temp);
+        }
+        else if(bc==tc && tc!=0 && mc==0)
+        {
+            temp = findViewById(R.id.midCenter);
+            chosen(temp);
+        }
+        else if(tr==mr && mr!=0 && br==0)
+        {
+            temp = findViewById(R.id.bottomRight);
+            chosen(temp);
+        }
+        else if(br==mr && mr!=0 && tr==0)
+        {
+            temp = findViewById(R.id.topRight);
+            chosen(temp);
+        }
+        else if(br==tr && tr!=0 && mr==0)
+        {
+            temp = findViewById(R.id.midRight);
+            chosen(temp);
+        }
+        else if(tl==mc && mc!=0 && br==0)
+        {
+            temp = findViewById(R.id.bottomRight);
+            chosen(temp);
+        }
+        else if(mc==br && br!=0 && tl==0)
+        {
+            temp = findViewById(R.id.topLeft);
+            chosen(temp);
+        }
+        else if(br==tl && tl!=0 && mc==0)
+        {
+            temp = findViewById(R.id.midCenter);
+            chosen(temp);
+        }
+        else if(bl==mc && mc!=0 && tr==0)
+        {
+            temp = findViewById(R.id.topRight);
+            chosen(temp);
+        }
+        else if(tr==mc && mc!=0 && bl==0)
+        {
+            temp = findViewById(R.id.bottomLeft);
+            chosen(temp);
+        }
+        else if(bl==tr && tr!=0 && mc==0)
+        {
+            temp = findViewById(R.id.midCenter);
+            chosen(temp);
+        }
+        else if(mc==0)
+        {
+            temp = findViewById(R.id.midCenter);
+            chosen(temp);
+        }
+        else if(tl==0)
+        {
+            temp = findViewById(R.id.topLeft);
+            chosen(temp);
+        }
+        else if(tr==0)
+        {
+            temp = findViewById(R.id.topRight);
+            chosen(temp);
+        }
+        else if(bl==0)
+        {
+            temp = findViewById(R.id.bottomLeft);
+            chosen(temp);
+        }
+        else if(br==0)
+        {
+            temp = findViewById(R.id.bottomRight);
+            chosen(temp);
+        }
+        else if(tc==0)
+        {
+            temp = findViewById(R.id.topCenter);
+            chosen(temp);
+        }
+        else if(ml==0)
+        {
+            temp = findViewById(R.id.midLeft);
+            chosen(temp);
+        }
+        else if(mr==0)
+        {
+            temp = findViewById(R.id.midRight);
+            chosen(temp);
+        }
+        else if(bc==0)
+        {
+            temp = findViewById(R.id.bottomCenter);
+            chosen(temp);
+        }
+    }
+
     public void chosen(View view)
     {
         if(gameOver)return;
@@ -283,31 +477,40 @@ public class TicTacToe extends Activity {
         switch(myImage.getId())
         {
             case R.id.topLeft:
-                tl=c;
+                if(tl==0)tl=c;
+                else return;
                 break;
             case R.id.topCenter:
-                tc=c;
+                if(tc==0)tc=c;
+                else return;
                 break;
             case R.id.topRight:
-                tr=c;
+                if(tr==0)tr=c;
+                else return;
                 break;
             case R.id.midLeft:
-                ml=c;
+                if(ml==0)ml=c;
+                else return;
                 break;
             case R.id.midCenter:
-                mc=c;
+                if(mc==0)mc=c;
+                else return;
                 break;
             case R.id.midRight:
-                mr=c;
+                if(mr==0)mr=c;
+                else return;
                 break;
             case R.id.bottomLeft:
-                bl=c;
+                if(bl==0)bl=c;
+                else return;
                 break;
             case R.id.bottomCenter:
-                bc=c;
+                if(bc==0)bc=c;
+                else return;
                 break;
             case R.id.bottomRight:
-                br=c;
+                if(br==0)br=c;
+                else return;
                 break;
         }
         if (myImage.getTag() == null) {
@@ -329,9 +532,9 @@ public class TicTacToe extends Activity {
                     else myImage.setImageResource(R.drawable.o4);
                     break;
             }
-            myImage.setTag(R.mipmap.ic_launcher);
             checkWin();
             setTurn();
+            if(ai && !xTurn)doAI();
         }
     }
 }
